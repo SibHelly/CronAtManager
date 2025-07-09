@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AtCreateDiolog</class>
+ <widget class="QDialog" name="AtCreateDiolog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>587</width>
+    <height>314</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>555</width>
+     <height>284</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Создание At</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QWidget" name="CreatingContainer" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Команда:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_command"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Описание:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_comment"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Время запуска:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QTimeEdit" name="timeEdit"/>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dateEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QRadioButton" name="radioTommorow">
+           <property name="text">
+            <string>Завтра</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioNextWeek">
+           <property name="text">
+            <string>На следующей неделе</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioNextMonth">
+           <property name="text">
+            <string>Через месяц</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_cancelDate">
+           <property name="text">
+            <string>Снять выделение</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Очередь:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox">
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>a</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>b</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>c</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>d</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>e</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>f</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>g</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>h</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>i</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>j</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>k</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>l</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>m</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>n</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>o</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>p</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>q</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>r</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>s</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>t</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>u</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>v</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>w</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>x</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>y</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>z</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="handleWidth">
+          <number>20</number>
+         </property>
+         <widget class="QPushButton" name="pushButton_cancel">
+          <property name="text">
+           <string>Отменить</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_create">
+          <property name="text">
+           <string>Создать</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
