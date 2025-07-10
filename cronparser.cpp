@@ -93,7 +93,6 @@ vector<CronTask> CronParser::parse_crontab_logs(const string &output){
 }
 
 bool CronParser::is_valid_cron_expression(const string& expression){
-    cout << expression << endl;
     regex cron_regex(R"(^(\*|\d+|\d+-\d+|\d+(,\d+)*|\*/\d+|\d+-\d+/\d+)(\s+(\*|\d+|\d+-\d+|\d+(,\d+)*|\*/\d+|\d+-\d+/\d+)){4}$)");
 
     return regex_match(expression, cron_regex);

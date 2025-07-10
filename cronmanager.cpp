@@ -117,7 +117,7 @@ void CronManager::load_from_crontab(){
         string output = executor->execute_command("crontab -l 2>/dev/null");
 
         if (executor->get_last_exit_code()!=0){
-            cout << "Not found cron tasks" << endl;
+            cerr << "Not found cron tasks" << endl;
             return;
         }
         for (auto& existing_task : tasks) {
