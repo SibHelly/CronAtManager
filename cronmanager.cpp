@@ -142,11 +142,6 @@ void CronManager::load_from_crontab(){
                 writeCronTaskToFile(task);
             }
         }
-
-
-        cout << "Loaded " << tasks.size() << " tasks from crontab" << endl;
-
-
     }catch(exception& e){
         throw CronParseException("Failed to load crontab" + string(e.what()));
         return;
@@ -255,6 +250,8 @@ void CronManager::writeCronTaskToFile(const CronTask& task) {
 void CronManager::clear(){
     executor->execute_command("rm " + filename);
     tasks.clear();
+    apply_changes_to_system();
+    cout<<"Cron cleared"<<endl;
 }
 
 

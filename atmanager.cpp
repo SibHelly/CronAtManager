@@ -151,7 +151,6 @@ void AtManager::load_from_atq() {
 }
 
 void AtManager::load_from_logs(){
-    cout<<"Load at from logs"<<endl;
     try{
         ifstream in(filename, ios::binary);
         if (!in.is_open()) {
