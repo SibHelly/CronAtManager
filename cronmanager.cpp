@@ -1,10 +1,8 @@
 #include "cronmanager.h"
 
 CronManager::CronManager(unique_ptr<ISystemExecutor> exec) : executor(move(exec)){
-    cout<<"Creating CronMnager"<<endl;
     if (!executor)
         throw TaskSchedulerException("SystemExecutor cannot be null");
-    cout<<filename<<endl;
     load_from_logs();
 
 }
@@ -45,7 +43,6 @@ bool CronManager::add_task(const CronTask& task){
             return false;
         }
         writeCronTaskToFile(newTask);
-        cout<< "Cron task adding sucsessfuly: " << newTask.id << endl;
         return true;
     }catch ( const exception& e){
         cerr << "Error adding cron task: " << e.what() << endl;
@@ -82,9 +79,21 @@ optional<CronTask> CronManager:: get_task_by_id(const string& task_id){
 
 void CronManager::load_from_logs(){
     try{
-        ifstream in(filename, ios::binary);
+        struct stat buffer;
+        if (stat(filename.c_str(), &buffer) != 0) {
+            // Файл не существует, создаём новый
+            std::ofstream out(filename, std::ios::binary);
+            if (!out) {
+                cerr << "Failed to create crontab file: " << filename << std::endl;
+                return;
+            }
+            out.close();
+            return;
+        }
+
+        std::ifstream in(filename, std::ios::binary);
         if (!in.is_open()) {
-            cerr << "Cannot open crontab logs file cron" << endl;
+            cerr << "Cannot open crontab file: " << filename << std::endl;
             return;
         }
 
@@ -209,7 +218,6 @@ string CronManager::generate_task_id(const CronTask& task){
 void CronManager::sync_with_system(){
     try{
         load_from_crontab();
-        // cout <<  "Synchronized with system cron queue" << endl;
     } catch (const exception& e){
         cerr << "Error syncing with at queue: " << e.what() << endl;
     }
@@ -217,11 +225,13 @@ void CronManager::sync_with_system(){
 
 void CronManager::writeCronTaskToFile(const CronTask& task) {
     ofstream outFile(filename, ios::app);
-    string dir = getConfigPath();
-    if (mkdir(dir.c_str(), 0755) == -1 && errno != EEXIST) {
-        cerr << "Failed to create directory: " << dir << endl;
-        return;
-    }
+    // string dir = getConfigPath();
+    // if (mkdir(dir.c_str(), 0700) == -1) {
+    //     if (errno != EEXIST) {  // Если ошибка не из-за существующей папки
+    //         cerr << "Failed to create directory: " << dir << endl;
+    //         return;
+    //     }
+    // }
 
     if (!outFile.is_open()) {
         cerr << "Failed to open file: " << filename << endl;
@@ -229,7 +239,6 @@ void CronManager::writeCronTaskToFile(const CronTask& task) {
     }
 
     // Конвертируем время в читаемый формат
-
     auto created_time = chrono::system_clock::to_time_t(task.created_at);
     char time_str[20];
     strftime(time_str, sizeof(time_str), "%H:%M:%S %Y/%m/%d", localtime(&created_time));
@@ -251,7 +260,6 @@ void CronManager::clear(){
     executor->execute_command("rm " + filename);
     tasks.clear();
     apply_changes_to_system();
-    cout<<"Cron cleared"<<endl;
 }
 
 

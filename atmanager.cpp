@@ -1,10 +1,8 @@
 #include "atmanager.h"
 
 AtManager::AtManager(unique_ptr<ISystemExecutor> exec) : executor(move(exec)){
-    cout<<"Creating AtMnager"<<endl;
     if (!executor)
         throw TaskSchedulerException("SystemExecutor cannot be null");
-    cout<<filename<<endl;
     load_from_logs();
 }
 
@@ -34,7 +32,6 @@ bool AtManager::add_task(const AtTask& task){
 
     string at_command = "at -q " + task.queue + " <<< '" + task.command + "' " + time_str + " 2>&1";
     string output = executor->execute_command(at_command);
-    cout<< "Output: "<<output<<endl;
 
     if (executor->get_last_exit_code() != 0) {
         cerr << "Failed to schedule at job: " << output << endl;
@@ -51,11 +48,8 @@ bool AtManager::add_task(const AtTask& task){
         return false;
     }
     newTask.is_active = true;
-    // Добавляем задачу в локальное хранилище
     tasks[newTask.id] = newTask;
     writeAtTaskToFile(newTask);
-    cout << "At task scheduled successfully: " << newTask.id
-              << " (Job ID: " << newTask.at_job_id << ")" << endl;
     return true;
 }
 
@@ -135,16 +129,9 @@ void AtManager::load_from_atq() {
         if (need_rewrite) {
             executor->execute_command("rm " + filename);
             for (const auto& [id, task] : tasks) {
-                cout<<"Write _ ";
-                cout<<task.command<< " " <<task.is_active<<" " << task.is_executed<<" "<<task.at_job_id<<endl;
                 writeAtTaskToFile(task);
             }
         }
-
-
-        // cout << "Loaded " << parsed_tasks.size() << " active tasks from atq" << endl;
-        // cout << "Total tasks in system: " << tasks.size() << endl;
-
     } catch (const exception& e) {
         throw AtParseException("Failed to load at queue: " + string(e.what()));
     }
@@ -152,6 +139,18 @@ void AtManager::load_from_atq() {
 
 void AtManager::load_from_logs(){
     try{
+        struct stat buffer;
+        if (stat(filename.c_str(), &buffer) != 0) {
+            // Файл не существует, создаём новый
+            std::ofstream out(filename, std::ios::binary);
+            if (!out) {
+                cerr << "Failed to create at file: " << filename << std::endl;
+                return;
+            }
+            out.close();
+            return;
+        }
+
         ifstream in(filename, ios::binary);
         if (!in.is_open()) {
             cerr << "Cannot open at logs file at" << endl;
@@ -193,18 +192,12 @@ string AtManager::generate_task_id(const AtTask &task){
 void AtManager::sync_with_system(){
     try{
         load_from_atq();
-        // cout <<  "Synchronized with system at queue" << endl;
     } catch (const exception& e){
         cerr << "Error syncing with at queue: " << e.what() << endl;
     }
 }
 
 void AtManager::writeAtTaskToFile(const AtTask& task){
-    string dir = getConfigPath();
-    if (mkdir(dir.c_str(), 0755) == -1 && errno != EEXIST) {
-        cerr << "Failed to create directory: " << dir << endl;
-        return;
-    }
     ofstream outFile(filename, ios::app);
     if (!outFile.is_open()) {
         cerr << "Failed to open file: " << filename << endl;
