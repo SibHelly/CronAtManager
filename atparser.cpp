@@ -15,7 +15,7 @@ vector<AtTask> AtParser::parse_atq_output(const string& atq_output, unique_ptr<I
         if (regex_match(line, matches, at_regex)) {
             AtTask task;
             task.at_job_id = matches[1].str();
-            trim(task.at_job_id);
+            TaskUtils::trim(task.at_job_id);
 
             string time_str = matches[2].str();
             task.scheduled_time = parse_at_time(time_str);
@@ -25,7 +25,7 @@ vector<AtTask> AtParser::parse_atq_output(const string& atq_output, unique_ptr<I
             try {
                 string cmd = "at -c " + task.at_job_id + " 2>/dev/null | tail -1";
                 string delimetr = executor->execute_command(cmd);
-                trim(delimetr);
+                TaskUtils::trim(delimetr);
                 string output = executor->execute_command("at -c " + task.at_job_id);
                 size_t delimiter_pos = output.find(delimetr);
                 if (delimiter_pos != string::npos) {
@@ -39,7 +39,7 @@ vector<AtTask> AtParser::parse_atq_output(const string& atq_output, unique_ptr<I
                 }
 
                 task.description = "At job #" + task.at_job_id;
-                trim(task.description);
+                TaskUtils::trim(task.description);
                 task.created_at = chrono::system_clock::now();
                 task.is_active=true;
             }catch(...){
@@ -77,51 +77,51 @@ vector<AtTask> AtParser::parse_at_logs(const string &at_file_output) {
         // Парсинг всех полей
         if (regex_search(line, matches, id_regex) && matches.size() > 1) {
             task.id = matches[1].str();
-            trim(task.id);
+            TaskUtils::trim(task.id);
         }
 
         if (regex_search(line, matches, command_regex) && matches.size() > 1) {
             task.command = matches[1].str();
-            trim(task.command);
+            TaskUtils::trim(task.command);
         }
 
         if (regex_search(line, matches, queue_regex) && matches.size() > 1) {
             task.queue = matches[1].str();
-            trim(task.queue);
+            TaskUtils::trim(task.queue);
         }
 
         if (regex_search(line, matches, desc_regex) && matches.size() > 1) {
             task.description = matches[1].str();
-            trim(task.description);
+            TaskUtils::trim(task.description);
         }
 
         if (regex_search(line, matches, created_regex) && matches.size() > 1) {
             string time_str = matches[1].str();
-            trim(time_str);
+            TaskUtils::trim(time_str);
             task.created_at = parse_at_timeSlash(time_str);
         }
 
         if (regex_search(line, matches, start_regex) && matches.size() > 1) {
             string time_str = matches[1].str();
-            trim(time_str);
+            TaskUtils::trim(time_str);
             task.scheduled_time = parse_at_timeSlash(time_str);
         }
 
         if (regex_search(line, matches, atq_id_regex) && matches.size() > 1) {
             task.at_job_id = matches[1].str();
-            trim(task.at_job_id);
+            TaskUtils::trim(task.at_job_id);
         }
 
         if (regex_search(line, matches, active_regex) && matches.size() > 1) {
             string value = matches[1].str();
-            trim(value);
+            TaskUtils::trim(value);
             task.is_active = (value == "true");
 
         }
 
         if (regex_search(line, matches, executed_regex) && matches.size() > 1) {
             string value = matches[1].str();
-            trim(value);
+            TaskUtils::trim(value);
             task.is_executed = (value == "true");
         } else {
             cout << "Executed not found in line: " << line << endl;

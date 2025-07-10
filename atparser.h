@@ -8,13 +8,13 @@
 #include <ctime>
 #include <iomanip>
 #include <algorithm>
-#include <boost/algorithm/string.hpp>
 
 #include "basicStructs.h"
 #include "isystemexecutor.h"
+#include "utils.h"
 
 using namespace std;
-using namespace boost::algorithm;
+
 
 class AtParser
 {
