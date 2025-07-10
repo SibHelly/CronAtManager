@@ -77,20 +77,23 @@ optional<CronTask> CronManager:: get_task_by_id(const string& task_id){
     return tasks[task_id];
 }
 
-void CronManager::load_from_logs(){
-    try{
-        struct stat buffer;
-        if (stat(filename.c_str(), &buffer) != 0) {
-            // Файл не существует, создаём новый
-            std::ofstream out(filename, std::ios::binary);
-            if (!out) {
-                cerr << "Failed to create crontab file: " << filename << std::endl;
-                return;
-            }
-            out.close();
+void CronManager::create_or_check_file(){
+    struct stat buffer;
+    if (stat(filename.c_str(), &buffer) != 0) {
+        // Файл не существует, создаём новый
+        std::ofstream out(filename, std::ios::binary);
+        if (!out) {
+            cerr << "Failed to create crontab file: " << filename << std::endl;
             return;
         }
+        out.close();
+        return;
+    }
+}
 
+void CronManager::load_from_logs(){
+    try{
+        create_or_check_file();
         std::ifstream in(filename, std::ios::binary);
         if (!in.is_open()) {
             cerr << "Cannot open crontab file: " << filename << std::endl;
@@ -224,15 +227,8 @@ void CronManager::sync_with_system(){
 }
 
 void CronManager::writeCronTaskToFile(const CronTask& task) {
+    create_or_check_file();
     ofstream outFile(filename, ios::app);
-    // string dir = getConfigPath();
-    // if (mkdir(dir.c_str(), 0700) == -1) {
-    //     if (errno != EEXIST) {  // Если ошибка не из-за существующей папки
-    //         cerr << "Failed to create directory: " << dir << endl;
-    //         return;
-    //     }
-    // }
-
     if (!outFile.is_open()) {
         cerr << "Failed to open file: " << filename << endl;
         return;
@@ -257,7 +253,6 @@ void CronManager::writeCronTaskToFile(const CronTask& task) {
 }
 
 void CronManager::clear(){
-    executor->execute_command("rm " + filename);
     tasks.clear();
     apply_changes_to_system();
 }

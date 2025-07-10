@@ -48,6 +48,7 @@ private:
     void load_from_logs();
     string generate_task_id(const AtTask& task);
     void writeAtTaskToFile(const AtTask& task);
+    void create_or_check_file();
 
 
     string filename = getConfigPath() + "atTasks.log";

@@ -54,6 +54,7 @@ private:
     void load_from_crontab();
     string generate_task_id(const CronTask& task);
     void writeCronTaskToFile(const CronTask& task);
+    void create_or_check_file();
 
     const string filename = getConfigPath() + "cronTasks.log";
 };

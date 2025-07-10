@@ -55,7 +55,8 @@ bool AtManager::add_task(const AtTask& task){
 
 bool AtManager::remove_task(const string &task_id){
     AtTask task=tasks[task_id];
-    executor->execute_command("at -r " + task.at_job_id);
+    if (task.is_active)
+        executor->execute_command("at -r " + task.at_job_id);
     tasks.erase(task_id);
     executor->execute_command("rm "+ filename);
     for (const auto& [id, task] : tasks){
@@ -137,19 +138,24 @@ void AtManager::load_from_atq() {
     }
 }
 
-void AtManager::load_from_logs(){
-    try{
-        struct stat buffer;
-        if (stat(filename.c_str(), &buffer) != 0) {
-            // Файл не существует, создаём новый
-            std::ofstream out(filename, std::ios::binary);
-            if (!out) {
-                cerr << "Failed to create at file: " << filename << std::endl;
-                return;
-            }
-            out.close();
+void AtManager::create_or_check_file(){
+    struct stat buffer;
+    if (stat(filename.c_str(), &buffer) != 0) {
+        // Файл не существует, создаём новый
+        std::ofstream out(filename, std::ios::binary);
+        if (!out) {
+            cerr << "Failed to create at file: " << filename << std::endl;
             return;
         }
+        out.close();
+        return;
+    }
+
+}
+
+void AtManager::load_from_logs(){
+    try{
+        create_or_check_file();
 
         ifstream in(filename, ios::binary);
         if (!in.is_open()) {
@@ -221,7 +227,8 @@ void AtManager::writeAtTaskToFile(const AtTask& task){
 void AtManager::clear(){
     executor->execute_command("rm " + filename);
     for (auto [id, task]:tasks){
-        executor->execute_command("at -r " + task.at_job_id);
+        if (task.is_active)
+            executor->execute_command("at -r " + task.at_job_id);
     }
     tasks.clear();
 }
