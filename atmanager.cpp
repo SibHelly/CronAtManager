@@ -142,8 +142,8 @@ void AtManager::load_from_atq() {
         }
 
 
-        cout << "Loaded " << parsed_tasks.size() << " active tasks from atq" << endl;
-        cout << "Total tasks in system: " << tasks.size() << endl;
+        // cout << "Loaded " << parsed_tasks.size() << " active tasks from atq" << endl;
+        // cout << "Total tasks in system: " << tasks.size() << endl;
 
     } catch (const exception& e) {
         throw AtParseException("Failed to load at queue: " + string(e.what()));
@@ -194,14 +194,14 @@ string AtManager::generate_task_id(const AtTask &task){
 void AtManager::sync_with_system(){
     try{
         load_from_atq();
-        cout <<  "Synchronized with system at queue" << endl;
+        // cout <<  "Synchronized with system at queue" << endl;
     } catch (const exception& e){
         cerr << "Error syncing with at queue: " << e.what() << endl;
     }
 }
 
 void AtManager::writeAtTaskToFile(const AtTask& task){
-    string dir = "/home/sibhelly/task_scheduler/";
+    string dir = getConfigPath();
     if (mkdir(dir.c_str(), 0755) == -1 && errno != EEXIST) {
         cerr << "Failed to create directory: " << dir << endl;
         return;

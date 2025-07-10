@@ -214,7 +214,7 @@ string CronManager::generate_task_id(const CronTask& task){
 void CronManager::sync_with_system(){
     try{
         load_from_crontab();
-        cout <<  "Synchronized with system cron queue" << endl;
+        // cout <<  "Synchronized with system cron queue" << endl;
     } catch (const exception& e){
         cerr << "Error syncing with at queue: " << e.what() << endl;
     }
@@ -222,7 +222,7 @@ void CronManager::sync_with_system(){
 
 void CronManager::writeCronTaskToFile(const CronTask& task) {
     ofstream outFile(filename, ios::app);
-    string dir = "/home/sibhelly/task_scheduler/";
+    string dir = getConfigPath();
     if (mkdir(dir.c_str(), 0755) == -1 && errno != EEXIST) {
         cerr << "Failed to create directory: " << dir << endl;
         return;
