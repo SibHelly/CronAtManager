@@ -19,7 +19,7 @@
 #include "utils.h"
 #include "taskschedulerexception.h"
 #include "atparseexception.h"
-#include "globals.h"
+#include "conf.h"
 
 using namespace std;
 
@@ -33,8 +33,7 @@ public:
     explicit AtManager(unique_ptr<ISystemExecutor> exec);
 
     // Основные операции
-    vector<AtTask> get_all_tasks();
-    bool add_task(const AtTask& task);
+    vector<AtTask> get_all_tasks(); bool add_task(const AtTask& task);
     bool remove_task(const string& task_id);
     bool update_task(const AtTask& task);
 

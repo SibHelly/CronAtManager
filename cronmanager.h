@@ -20,7 +20,7 @@
 #include "taskschedulerexception.h"
 #include "cronparseexception.h"
 
-#include "globals.h"
+#include "conf.h"
 
 using namespace std;
 

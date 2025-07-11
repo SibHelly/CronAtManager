@@ -9,16 +9,13 @@ CONFIG += c++17
 SOURCES += \
     atcreatediolog.cpp \
     atmanager.cpp \
-    atparseexception.cpp \
     atparser.cpp \
+    conf.cpp \
     croncreatediolog.cpp \
     cronmanager.cpp \
-    cronparseexception.cpp \
     cronparser.cpp \
-    isystemexecutor.cpp \
     main.cpp \
     mainwindow.cpp \
-    systemexecutionexception.cpp \
     systemexecutor.cpp \
     taskschedulerexception.cpp \
     taskschedulerservice.cpp \
@@ -30,11 +27,11 @@ HEADERS += \
     atparseexception.h \
     atparser.h \
     basicStructs.h \
+    conf.h \
     croncreatediolog.h \
     cronmanager.h \
     cronparseexception.h \
     cronparser.h \
-    globals.h \
     isystemexecutor.h \
     mainwindow.h \
     systemexecutionexception.h \
